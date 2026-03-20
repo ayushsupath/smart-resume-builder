@@ -1,8 +1,17 @@
-const { getModel } = require('../config/gemini');
+const Groq = require('groq-sdk');
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+
+async function callGroq(prompt) {
+  const completion = await groq.chat.completions.create({
+    messages: [{ role: 'user', content: prompt }],
+    model: 'llama-3.3-70b-versatile',
+    max_tokens: 2048,
+  });
+  return completion.choices[0]?.message?.content || '';
+}
 
 // Resume ko improve karo AI se
 const improveResume = async (resumeData) => {
-  const model = getModel();
   const prompt = `
 You are an expert resume writer and career coach. Analyze this resume and provide specific, actionable improvements.
 
@@ -20,13 +29,11 @@ Please provide:
 Be specific, practical, and encouraging. Format your response in clear sections.
   `;
 
-  const result = await model.generateContent(prompt);
-  return result.response.text();
+  return await callGroq(prompt);
 };
 
 // Job ke saath resume ka match score nikalo
 const getJobMatchScore = async (resumeData, jobData) => {
-  const model = getModel();
   const prompt = `
 You are an ATS (Applicant Tracking System) expert. Analyze how well this resume matches the job description.
 
@@ -57,8 +64,7 @@ Provide a JSON response with this EXACT format (no markdown, just JSON):
 }
   `;
 
-  const result = await model.generateContent(prompt);
-  const text = result.response.text();
+  const text = await callGroq(prompt);
 
   try {
     const jsonMatch = text.match(/\{[\s\S]*\}/);
@@ -82,7 +88,6 @@ Provide a JSON response with this EXACT format (no markdown, just JSON):
 
 // Cover letter generate karo
 const generateCoverLetter = async (resumeData, jobData) => {
-  const model = getModel();
   const prompt = `
 Write a professional, personalized cover letter for this job application.
 
@@ -108,13 +113,11 @@ Write a compelling cover letter that:
 Write ONLY the cover letter, no explanations.
   `;
 
-  const result = await model.generateContent(prompt);
-  return result.response.text();
+  return await callGroq(prompt);
 };
 
 // Skills gap analysis
 const analyzeSkillsGap = async (resumeData, jobData) => {
-  const model = getModel();
   const prompt = `
 Analyze the skills gap between this candidate and job requirements.
 
@@ -139,8 +142,7 @@ Provide a JSON response with this EXACT format (no markdown):
 }
   `;
 
-  const result = await model.generateContent(prompt);
-  const text = result.response.text();
+  const text = await callGroq(prompt);
 
   try {
     const jsonMatch = text.match(/\{[\s\S]*\}/);
@@ -152,7 +154,6 @@ Provide a JSON response with this EXACT format (no markdown):
 
 // ATS Score Generator
 const checkATSScore = async (resumeData) => {
-  const model = getModel();
   const prompt = `
 You are an expert ATS (Applicant Tracking System) parser and resume reviewer. Analyze this resume data.
 
@@ -176,8 +177,7 @@ Provide a JSON response with this EXACT format covering the resume's ATS-friendl
 }
   `;
 
-  const result = await model.generateContent(prompt);
-  const text = result.response.text();
+  const text = await callGroq(prompt);
 
   try {
     const jsonMatch = text.match(/\{[\s\S]*\}/);

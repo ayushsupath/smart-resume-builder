@@ -1,10 +1,4 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const Groq = require('groq-sdk');
 require('dotenv').config();
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-const getModel = () => {
-  return genAI.getGenerativeModel({ model: 'gemini-2.0-flash' }); // Free model
-};
-
-module.exports = { getModel };
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+module.exports = { groq };

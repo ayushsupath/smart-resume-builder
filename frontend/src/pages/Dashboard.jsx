@@ -53,9 +53,9 @@ export default function Dashboard() {
     <div>
       {/* Welcome Banner */}
       <div style={{ background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)', borderRadius: 20, padding: '32px 36px', marginBottom: 32, color: 'white' }}>
-        <h1 style={{ fontSize: 28, fontWeight: 800 }}>Welcome back, {user?.name?.split(' ')[0]}! 👋</h1>
-        <p style={{ marginTop: 8, opacity: 0.9, fontSize: 16 }}>Build your perfect resume and land your dream job.</p>
-        <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
+        <h1 className="dashboard-banner-title" style={{ fontSize: 28, fontWeight: 800 }}>Welcome back, {user?.name?.split(' ')[0]}! 👋</h1>
+        <p className="dashboard-banner-text" style={{ marginTop: 8, opacity: 0.9, fontSize: 16 }}>Build your perfect resume and land your dream job.</p>
+        <div className="mobile-stack" style={{ display: 'flex', gap: 12, marginTop: 24 }}>
           <Link to="/resumes/new" className="btn" style={{ background: 'white', color: '#6366f1' }}>✨ New Resume</Link>
           <Link to="/jobs" className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: '1px solid rgba(255,255,255,0.4)' }}>💼 Browse Jobs</Link>
         </div>
@@ -127,7 +127,7 @@ export default function Dashboard() {
       {/* Quick Actions */}
       <div className="card" style={{ marginTop: 24 }}>
         <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>⚡ Quick Actions</h2>
-        <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+        <div className="mobile-stack" style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           <Link to="/resumes/new" className="btn btn-primary">📄 Build Resume</Link>
           <Link to="/jobs" className="btn btn-secondary">💼 Find Jobs</Link>
           <Link to="/applications" className="btn btn-secondary">📋 Track Applications</Link>

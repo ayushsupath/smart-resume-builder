@@ -37,7 +37,7 @@ export default function Register() {
           <p style={{ color: 'rgba(255,255,255,0.8)', marginTop: 6 }}>Start building your dream resume</p>
         </div>
 
-        <div className="card" style={{ padding: 32 }}>
+        <div className="card auth-card" style={{ padding: 32 }}>
           <form onSubmit={handleSubmit}>
             <div className="grid-2">
               <div className="form-group">

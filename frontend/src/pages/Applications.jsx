@@ -58,10 +58,10 @@ export default function Applications() {
       </div>
 
       {/* Filter */}
-      <div style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
+      <div className="mobile-scroll-x" style={{ display: 'flex', gap: 8, marginBottom: 20, flexWrap: 'wrap' }}>
         {['all', 'applied', 'reviewing', 'shortlisted', 'hired', 'rejected'].map(f => (
           <button key={f} onClick={() => setFilter(f)} className="btn btn-sm"
-            style={{ background: filter === f ? '#6366f1' : 'white', color: filter === f ? 'white' : '#374151', border: '1px solid #e5e7eb', textTransform: 'capitalize' }}>
+            style={{ flexShrink: 0, background: filter === f ? '#6366f1' : 'white', color: filter === f ? 'white' : '#374151', border: '1px solid #e5e7eb', textTransform: 'capitalize' }}>
             {f === 'all' ? '🔎 All' : statusColors[f]?.label || f}
           </button>
         ))}
@@ -78,7 +78,7 @@ export default function Applications() {
           {filtered.map(app => {
             const st = statusColors[app.status] || statusColors.applied;
             return (
-              <div key={app.id} className="card" style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 20px' }}>
+              <div key={app.id} className="card mobile-stack" style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '16px 20px' }}>
                 <div style={{ width: 48, height: 48, background: '#e0e7ff', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, flexShrink: 0 }}>🏢</div>
                 <div style={{ flex: 1 }}>
                   <p style={{ fontWeight: 700, fontSize: 15 }}>{app.job?.title || 'Job'}</p>

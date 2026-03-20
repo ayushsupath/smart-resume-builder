@@ -66,9 +66,9 @@ export default function Resumes() {
               <h3 style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{r.title}</h3>
               <p style={{ fontSize: 13, color: '#6b7280' }}>{r.fullName || 'Name not set'}</p>
               <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 4 }}>Updated {new Date(r.updatedAt).toLocaleDateString()}</p>
-              <div style={{ display: 'flex', gap: 8, marginTop: 16 }}>
+              <div className="mobile-stack" style={{ display: 'flex', gap: 8, marginTop: 16 }}>
                 <Link to={`/resumes/${r.id}`} className="btn btn-primary btn-sm" style={{ flex: 1, justifyContent: 'center' }}>✏️ Edit</Link>
-                <button onClick={() => handleDelete(r.id)} className="btn btn-secondary btn-sm">🗑️</button>
+                <button onClick={() => handleDelete(r.id)} className="btn btn-secondary btn-sm" style={{ justifyContent: 'center' }}>🗑️ Delete</button>
               </div>
             </div>
           ))}

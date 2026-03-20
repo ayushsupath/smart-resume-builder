@@ -85,9 +85,9 @@ export default function Jobs() {
       </div>
 
       {/* Search Bar */}
-      <form onSubmit={handleSearch} style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
+      <form onSubmit={handleSearch} className="mobile-stack" style={{ display: 'flex', gap: 10, marginBottom: 24 }}>
         <input className="form-input" placeholder="🔍 Search jobs, companies..." value={search} onChange={e => setSearch(e.target.value)} style={{ flex: 1 }} />
-        <select className="form-input form-select" value={jobType} onChange={e => { setJobType(e.target.value); setPage(1); }} style={{ width: 160 }}>
+        <select className="form-input form-select" value={jobType} onChange={e => { setJobType(e.target.value); setPage(1); }} style={{ width: '100%', maxWidth: 160 }}>
           <option value="">All Types</option>
           {['full-time', 'part-time', 'internship', 'freelance', 'remote'].map(t => <option key={t} value={t}>{t}</option>)}
         </select>
@@ -130,7 +130,7 @@ export default function Jobs() {
       {/* Job Detail Modal */}
       {selectedJob && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20 }} onClick={() => setSelectedJob(null)}>
-          <div style={{ background: 'white', borderRadius: 20, width: '100%', maxWidth: 700, maxHeight: '90vh', overflow: 'auto', padding: 32 }} onClick={e => e.stopPropagation()}>
+          <div className="modal-content" style={{ background: 'white', borderRadius: 20, width: '100%', maxWidth: 700, maxHeight: '90vh', overflow: 'auto', padding: 32 }} onClick={e => e.stopPropagation()}>
             <div className="flex-between mb-16">
               <div>
                 <h2 style={{ fontSize: 22, fontWeight: 800 }}>{selectedJob.title}</h2>
@@ -163,7 +163,7 @@ export default function Jobs() {
                 <option value="">-- Choose your resume --</option>
                 {resumes.map(r => <option key={r.id} value={r.id}>{r.title} ({r.fullName})</option>)}
               </select>
-              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              <div className="mobile-stack" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 <button className="btn btn-sm" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: 'white' }} onClick={() => handleMatch(selectedJob.id)} disabled={aiLoading === 'match'}>
                   {aiLoading === 'match' ? <><span className="spinner"></span> Analyzing...</> : '🎯 Match Score'}
                 </button>

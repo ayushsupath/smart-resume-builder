@@ -48,12 +48,13 @@ export default function ResumePreview({ resume }) {
   });
 
   return (
-    <div style={wrapperStyle}>
+    <div style={wrapperStyle} className="preview-wrapper">
       <div style={{ width: '100%', maxWidth: '700px', display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-        <button onClick={handleDownload} className="btn btn-success btn-sm">Download ATS Resume</button>
+        <button onClick={handleDownload} className="btn btn-success btn-sm btn-lg hide-on-desktop">Download PDF</button>
+        <button onClick={handleDownload} className="btn btn-success btn-sm hide-on-mobile">Download ATS Resume</button>
       </div>
 
-      <div style={paperStyle} id="resume-preview-content" ref={printRef}>
+      <div style={paperStyle} id="resume-preview-content" ref={printRef} className="preview-paper">
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '16px' }}>
           <h1 style={{ fontSize: '24px', fontWeight: 700, margin: '0 0 4px 0', color: '#000000' }}>

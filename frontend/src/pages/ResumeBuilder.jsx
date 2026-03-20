@@ -101,9 +101,9 @@ export default function ResumeBuilder() {
   );
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: showPreview ? '55% 45%' : '1fr', gap: 24 }}>
+    <div className="builder-layout" style={{ display: 'grid', gridTemplateColumns: showPreview ? '55% 45%' : '1fr', gap: 24 }}>
       {/* Builder Panel */}
-      <div>
+      <div className={showPreview ? 'hide-on-mobile' : ''}>
         {/* Header */}
         <div className="card" style={{ marginBottom: 16, padding: '12px 16px' }}>
           <div className="flex-between" style={{ flexWrap: 'wrap', gap: '12px' }}>
@@ -114,7 +114,7 @@ export default function ResumeBuilder() {
                 style={{ fontSize: 18, fontWeight: 700, border: 'none', outline: 'none', background: 'transparent', color: '#0f172a', maxWidth: '180px' }}
               />
             </div>
-            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+            <div className="mobile-stack" style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
               <button onClick={() => setShowPreview(!showPreview)} className="btn btn-secondary btn-sm">
                 {showPreview ? '🙈 Hide Preview' : '👁️ Preview'}
               </button>
@@ -132,7 +132,7 @@ export default function ResumeBuilder() {
         </div>
 
         {/* Tabs */}
-        <div style={{ display: 'flex', gap: 4, marginBottom: 16, overflowX: 'auto', padding: '2px 0' }}>
+        <div className="mobile-scroll-x" style={{ display: 'flex', gap: 4, marginBottom: 16, overflowX: 'auto', padding: '2px 0' }}>
           {tabs.map(t => (
             <button key={t.key} onClick={() => setActiveTab(t.key)} className="btn btn-sm"
               style={{ background: activeTab === t.key ? '#6366f1' : 'white', color: activeTab === t.key ? 'white' : '#4b5563', border: '1px solid #e5e7eb', whiteSpace: 'nowrap' }}>
@@ -357,6 +357,11 @@ export default function ResumeBuilder() {
       {/* Preview Panel */}
       {showPreview && (
         <div style={{ position: 'sticky', top: '80px', height: 'calc(100vh - 100px)', overflowY: 'auto' }}>
+          <div className="hide-on-desktop" style={{ paddingBottom: 16 }}>
+             <button onClick={() => setShowPreview(false)} className="btn btn-secondary btn-sm" style={{ width: '100%', justifyContent: 'center' }}>
+               ⬅️ Back to Editor
+             </button>
+          </div>
           <ResumePreview resume={resume} />
         </div>
       )}
