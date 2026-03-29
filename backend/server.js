@@ -6,6 +6,7 @@ const { connectDB } = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const resumeRoutes = require('./routes/resumeRoutes');
 const jobRoutes = require('./routes/jobRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 
 // Setup model associations
 const User = require('./models/User');
@@ -38,6 +39,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/jobs', jobRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

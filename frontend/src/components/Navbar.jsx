@@ -40,11 +40,9 @@ export default function Navbar() {
       <div style={{ maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 64 }}>
         {/* Logo & Hamburger container */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          {user && (
-            <button className="hide-on-desktop" style={{ background: 'transparent', border: 'none', fontSize: 24, cursor: 'pointer', padding: 0, display: 'none' }} onClick={() => setMenuOpen(!menuOpen)}>
-              ☰
-            </button>
-          )}
+          <button className="hide-on-desktop" style={{ background: 'transparent', border: 'none', fontSize: 24, cursor: 'pointer', padding: 0 }} onClick={() => setMenuOpen(!menuOpen)}>
+            ☰
+          </button>
           <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
             <div style={{ width: 36, height: 36, background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 800, fontSize: 16 }}>R</div>
             <span style={{ fontWeight: 800, fontSize: 18, color: 'var(--text)' }}>Smart<span style={{ color: '#6366f1' }}>Resume</span></span>
@@ -57,6 +55,7 @@ export default function Navbar() {
             {[
               { to: '/dashboard', label: '📊 Dashboard' },
               { to: '/resumes', label: '📄 Resumes' },
+              { to: '/upload', label: '📤 Upload Resume' },
             ].map(link => (
               <Link
                 key={link.to}
@@ -82,6 +81,7 @@ export default function Navbar() {
           <button onClick={() => setIsDark(!isDark)} style={{ background: 'transparent', border: 'none', fontSize: 20, cursor: 'pointer', outline: 'none' }} title="Toggle Theme">
             {isDark ? '☀️' : '🌙'}
           </button>
+          <Link to="/about" className="hide-on-mobile" style={{ color: isActive('/about') ? '#6366f1' : 'var(--text)', textDecoration: 'none', fontWeight: 600, fontSize: 14, paddingRight: '8px' }}>About</Link>
           {user ? (
             <>
               <div className="hide-on-mobile" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
@@ -102,11 +102,27 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Nav Links Dropdown */}
-      {user && menuOpen && (
-        <div className="hide-on-desktop" style={{ padding: '12px 0', borderTop: '1px solid var(--border)', display: 'none' }}>
-          {[
+      {menuOpen && (
+        <div className="hide-on-desktop" style={{ padding: '12px 0', borderTop: '1px solid var(--border)' }}>
+          <Link
+            to="/about"
+            onClick={() => setMenuOpen(false)}
+            style={{
+              display: 'block',
+              padding: '12px 16px',
+              textDecoration: 'none',
+              fontSize: 15,
+              fontWeight: 500,
+              color: isActive('/about') ? '#6366f1' : 'var(--text-muted)',
+              background: isActive('/about') ? 'var(--primary-light)' : 'transparent',
+              borderRadius: 8,
+              marginBottom: 4
+            }}
+          >About Us</Link>
+          {user && [
             { to: '/dashboard', label: '📊 Dashboard' },
             { to: '/resumes', label: '📄 Resumes' },
+            { to: '/upload', label: '📤 Upload Resume' },
           ].map(link => (
             <Link
               key={link.to}
@@ -125,12 +141,14 @@ export default function Navbar() {
               }}
             >{link.label}</Link>
           ))}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', marginTop: 8, borderTop: '1px solid var(--border)' }}>
-            <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700, fontSize: 14 }}>
-              {user.name?.charAt(0).toUpperCase()}
+          {user && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px 16px', marginTop: 8, borderTop: '1px solid var(--border)' }}>
+              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 700, fontSize: 14 }}>
+                {user.name?.charAt(0).toUpperCase()}
+              </div>
+              <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>{user.name}</span>
             </div>
-            <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text)' }}>{user.name}</span>
-          </div>
+          )}
         </div>
       )}
     </nav>
