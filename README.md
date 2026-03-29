@@ -1,117 +1,169 @@
-# 🚀 Smart Resume Builder + Job Matcher
+# 🚀 Smart Resume Builder + AI Analyzer
 
-AI-powered resume builder with job matching, cover letter generator, and application tracker. **100% FREE** using Google Gemini API.
+> Build ATS-friendly resumes, get AI feedback, and land 
+> your dream job — 100% FREE!
+
+![React](https://img.shields.io/badge/React-18-blue)
+![Node.js](https://img.shields.io/badge/Node.js-20-green)
+![MySQL](https://img.shields.io/badge/MySQL-8.0-orange)
+![Groq AI](https://img.shields.io/badge/Groq-AI-purple)
+![License](https://img.shields.io/badge/License-MIT-yellow)
+
+## 🌐 Live Demo
+- **Frontend:** [your-app.vercel.app](https://your-app.vercel.app)
+- **Backend API:** [your-api.onrender.com](https://your-api.onrender.com)
 
 ---
 
 ## ✨ Features
-- 📄 **Resume Builder** – Build resumes with live preview + PDF download
-- 🤖 **AI Resume Improver** – Get AI feedback on your resume (Gemini)
-- 💼 **Job Listings** – Browse and search jobs
-- 🎯 **AI Job Matcher** – Get match score % between your resume & job
-- ✉️ **AI Cover Letter** – Auto-generate personalized cover letters
-- 📋 **Application Tracker** – Track all your job applications
-- 🔐 **Auth System** – JWT-based login/register
+
+- 📄 **Resume Builder** — Build professional resumes with live preview
+- 🤖 **AI Resume Improver** — Get AI suggestions powered by Groq
+- 🎯 **ATS Score Checker** — Check how well your resume passes ATS
+- 📤 **Upload & Analyze** — Upload existing PDF resume for AI analysis
+- ✉️ **AI Cover Letter** — Auto-generate personalized cover letters  
+- 🎨 **Multiple Templates** — Modern, Classic, Minimal designs
+- 🏆 **Certifications** — Add certificates to your resume
+- 🌙 **Dark Mode** — Easy on the eyes
+- 📱 **Fully Responsive** — Works on mobile, tablet, desktop
+- 🔐 **Secure Auth** — JWT based login/register
+- 📧 **Email Notifications** — Get notified on important actions
+- ⬇️ **PDF Download** — Download your resume as PDF
 
 ---
 
 ## 🛠️ Tech Stack
-- **Frontend:** React + Vite, React Router, Axios, react-to-print
-- **Backend:** Node.js, Express.js
-- **Database:** MySQL 8.0 + Sequelize ORM
-- **AI:** Google Gemini 1.5 Flash (FREE)
-- **Auth:** JWT + bcryptjs
+
+### Frontend
+- React.js 18 + Vite
+- React Router v6
+- Axios
+- React Hot Toast
+- React To Print
+
+### Backend
+- Node.js + Express.js
+- MySQL 8.0 + Sequelize ORM
+- JWT Authentication
+- Multer (file upload)
+- Nodemailer (emails)
+
+### AI
+- Groq API (FREE) — llama-3.3-70b-versatile
+- Features: Resume improve, ATS score, Cover letter, Skills gap
 
 ---
 
-## ⚡ Setup Guide
+## ⚡ Local Setup
 
-### Step 1 – MySQL Setup
-```sql
+### Prerequisites
+- Node.js v18+
+- MySQL 8.0
+- Groq API Key (free from groq.com)
+
+### Step 1 — Clone the repo
+git clone https://github.com/YOUR_USERNAME/smart-resume-builder.git
+cd smart-resume-builder
+
+### Step 2 — MySQL Database
 CREATE DATABASE smart_resume_db;
-```
 
-### Step 2 – Get FREE Gemini API Key
-1. Go to https://aistudio.google.com
-2. Click "Get API Key"
-3. Create a new key → Copy it
-
-### Step 3 – Email Notifications (Gmail App Password)
-1. Go to Google Account > Security > 2-Step Verification > App Passwords
-2. Generate an App Password for "Mail"
-3. Add this password to `.env` as `EMAIL_PASS`
-4. Add your Gmail to `.env` as `EMAIL_USER`
-
-### Step 4 – Backend Setup
-```bash
+### Step 3 — Backend Setup
 cd backend
 npm install
 cp .env.example .env
-# Edit .env → add DB credentials + Gemini API key + Email credentials
-npm run dev
-```
 
-### Step 5 – Frontend Setup
-```bash
+Fill in .env:
+PORT=5000
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=smart_resume_db
+DB_USER=root
+DB_PASSWORD=your_password
+JWT_SECRET=your_secret_key
+GROQ_API_KEY=your_groq_api_key
+FRONTEND_URL=http://localhost:5173
+
+npm run dev
+
+### Step 4 — Frontend Setup
 cd frontend
 npm install
 npm run dev
-```
 
-### Step 6 – Open Browser
-```
-Frontend: http://localhost:5173
-Backend:  http://localhost:5000/api/health
-```
+### Step 5 — Open Browser
+http://localhost:5173
+
+---
+
+## 🚀 Deployment
+
+| Service | Platform | Cost |
+|---------|----------|------|
+| Frontend | Vercel | Free |
+| Backend | Render | Free |
+| Database | Railway | Free |
 
 ---
 
 ## 📁 Project Structure
-```
+
 smart-resume-builder/
 ├── backend/
-│   ├── config/         # DB + Gemini config
-│   ├── controllers/    # Auth, Resume, Job logic
-│   ├── middleware/     # JWT auth, Admin check
-│   ├── models/         # Sequelize DB models
+│   ├── config/         # DB + AI config
+│   ├── controllers/    # Business logic
+│   ├── middleware/     # Auth middleware
+│   ├── models/         # Database models
 │   ├── routes/         # API routes
-│   ├── services/       # Gemini AI service
-│   └── server.js       # Entry point
+│   ├── services/       # AI + PDF services
+│   └── server.js
 │
 └── frontend/
     └── src/
-        ├── components/ # Navbar, ResumePreview, ProtectedRoute
-        ├── context/    # AuthContext
-        ├── pages/      # Login, Register, Dashboard, etc.
-        └── services/   # Axios API instance
-```
+        ├── components/ # Navbar, Footer, ResumePreview
+        ├── context/    # Auth context
+        ├── pages/      # All pages
+        └── services/   # API calls
 
 ---
 
 ## 🔗 API Endpoints
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | /api/auth/register | Register |
-| POST | /api/auth/login | Login |
-| GET | /api/resumes | Get my resumes |
-| POST | /api/resumes | Create resume |
-| PUT | /api/resumes/:id | Update resume |
-| POST | /api/resumes/:id/improve | AI improve |
-| GET | /api/jobs | Browse jobs |
-| POST | /api/jobs/:id/match | AI job match |
-| POST | /api/jobs/:id/cover-letter | AI cover letter |
-| POST | /api/jobs/:id/apply | Apply to job |
-| GET | /api/jobs/applications/my | My applications |
+
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| POST | /api/auth/register | Register | No |
+| POST | /api/auth/login | Login | No |
+| GET | /api/resumes | Get my resumes | Yes |
+| POST | /api/resumes | Create resume | Yes |
+| PUT | /api/resumes/:id | Update resume | Yes |
+| DELETE | /api/resumes/:id | Delete resume | Yes |
+| POST | /api/resumes/:id/improve | AI improve | Yes |
+| POST | /api/resumes/:id/ats-score | ATS score | Yes |
+| POST | /api/upload/analyze | Upload & analyze PDF | No |
+| POST | /api/upload/improve | Upload & improve PDF | No |
 
 ---
 
-## 🎯 Add Sample Jobs (Run in MySQL)
-```sql
-INSERT INTO job_listings (title, company, location, jobType, salary, description, skills, requirements, isActive, createdAt, updatedAt)
-VALUES 
-('Frontend Developer', 'TechCorp India', 'Bengaluru', 'full-time', '6-10 LPA', 'We are looking for a skilled React developer...', '["React", "JavaScript", "CSS", "Git"]', '["2+ years experience", "React proficiency"]', 1, NOW(), NOW()),
-('Backend Developer', 'StartupXYZ', 'Remote', 'remote', '8-14 LPA', 'Join our fast-growing startup as a Node.js developer...', '["Node.js", "Express", "MySQL", "REST API"]', '["1+ years experience", "Node.js knowledge"]', 1, NOW(), NOW()),
-('Full Stack Intern', 'InnovateTech', 'Indore', 'internship', '15-20K/month', 'Exciting internship opportunity for freshers...', '["React", "Node.js", "HTML", "CSS"]', '["Final year student", "Basic web knowledge"]', 1, NOW(), NOW());
-```
+## 🤝 Contributing
+
+1. Fork the repo
+2. Create branch: git checkout -b feature/amazing-feature
+3. Commit: git commit -m 'Add amazing feature'
+4. Push: git push origin feature/amazing-feature
+5. Open Pull Request
 
 ---
+
+## 📄 License
+MIT License — feel free to use this project!
+
+---
+
+## 👨💻 Made By
+**Ayush Supath** — MCA Student at SGSITS, Indore
+- GitHub: github.com/ayushsupath
+- Email: ayushsupath13326@gmail.com
+
+---
+
+⭐ **If this project helped you, please give it a star!** ⭐
