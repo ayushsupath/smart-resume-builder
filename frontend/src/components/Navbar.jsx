@@ -57,8 +57,6 @@ export default function Navbar() {
             {[
               { to: '/dashboard', label: '📊 Dashboard' },
               { to: '/resumes', label: '📄 Resumes' },
-              { to: '/jobs', label: '💼 Jobs' },
-              { to: '/applications', label: '📋 Applications' },
             ].map(link => (
               <Link
                 key={link.to}
@@ -109,8 +107,6 @@ export default function Navbar() {
           {[
             { to: '/dashboard', label: '📊 Dashboard' },
             { to: '/resumes', label: '📄 Resumes' },
-            { to: '/jobs', label: '💼 Jobs' },
-            { to: '/applications', label: '📋 Applications' },
           ].map(link => (
             <Link
               key={link.to}

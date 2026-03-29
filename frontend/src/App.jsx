@@ -9,8 +9,6 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Resumes from './pages/Resumes';
 import ResumeBuilder from './pages/ResumeBuilder';
-import Jobs from './pages/Jobs';
-import Applications from './pages/Applications';
 
 export default function App() {
   return (
@@ -36,8 +34,6 @@ export default function App() {
               <Route path="/resumes" element={<ProtectedRoute><Resumes /></ProtectedRoute>} />
               <Route path="/resumes/new" element={<ProtectedRoute><ResumeBuilder /></ProtectedRoute>} />
               <Route path="/resumes/:id" element={<ProtectedRoute><ResumeBuilder /></ProtectedRoute>} />
-              <Route path="/jobs" element={<ProtectedRoute><Jobs /></ProtectedRoute>} />
-              <Route path="/applications" element={<ProtectedRoute><Applications /></ProtectedRoute>} />
 
               {/* Redirect root */}
               <Route path="/" element={<Navigate to="/dashboard" replace />} />
