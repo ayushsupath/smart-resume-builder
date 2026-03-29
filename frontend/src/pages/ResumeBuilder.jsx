@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Component } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import api from '../services/api';
@@ -9,6 +9,31 @@ const emptyResume = {
   linkedin: '', github: '', website: '', summary: '',
   experience: [], education: [], skills: [], projects: [], certifications: [],
 };
+
+class PreviewErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error("Preview panel error:", error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ background: 'white', padding: '20px', textAlign: 'center', color: '#ef4444', borderRadius: '8px', border: '1px solid #fee2e2', margin: '20px' }}>
+          <h3>Preview Error</h3>
+          <p>There is an issue rendering the preview with the current data.</p>
+          <button className="btn btn-secondary btn-sm" onClick={() => this.setState({ hasError: false })} style={{ marginTop: '10px' }}>Try Again</button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 export default function ResumeBuilder() {
   const { id } = useParams();
@@ -94,6 +119,7 @@ export default function ResumeBuilder() {
     { key: 'education', label: '🎓 Education' },
     { key: 'skills', label: '⚡ Skills' },
     { key: 'projects', label: '🚀 Projects' },
+    { key: 'certifications', label: '🏆 Certifications' },
   ];
 
   if (loading) return (
@@ -276,6 +302,36 @@ export default function ResumeBuilder() {
               {(resume.projects || []).length === 0 && <p style={{ color: '#9ca3af', textAlign: 'center', padding: 30 }}>No projects added yet.</p>}
             </div>
           )}
+
+          {/* Certifications */}
+          {activeTab === 'certifications' && (
+            <div>
+              <div className="flex-between mb-16">
+                <h3 style={{ fontWeight: 700 }}>Certifications</h3>
+                <button className="btn btn-primary btn-sm" onClick={() => addItem('certifications', { name: '', issuer: '', issueDate: '', expiryDate: '', noExpiry: false, credentialId: '', url: '' })}>+ Add Certification</button>
+              </div>
+              {(resume.certifications || []).map((cert, i) => (
+                <div key={i} style={{ border: '1px solid #e5e7eb', borderRadius: 10, padding: 16, marginBottom: 12 }}>
+                  <div className="grid-2">
+                    <div className="form-group"><label className="form-label">Certificate Name</label><input className="form-input" placeholder="AWS Certified Developer" value={cert.name || ''} onChange={e => updateItem('certifications', i, { name: e.target.value })} /></div>
+                    <div className="form-group"><label className="form-label">Issuing Organization</label><input className="form-input" placeholder="Amazon Web Services" value={cert.issuer || ''} onChange={e => updateItem('certifications', i, { issuer: e.target.value })} /></div>
+                    <div className="form-group"><label className="form-label">Issue Date</label><input className="form-input" type="month" value={cert.issueDate || ''} onChange={e => updateItem('certifications', i, { issueDate: e.target.value })} /></div>
+                    <div className="form-group"><label className="form-label">Expiry Date</label><input className="form-input" type="month" value={cert.expiryDate || ''} onChange={e => updateItem('certifications', i, { expiryDate: e.target.value })} disabled={cert.noExpiry} placeholder={cert.noExpiry ? 'No Expiry' : ''} /></div>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                    <input type="checkbox" id={`noexp-${i}`} checked={cert.noExpiry || false} onChange={e => updateItem('certifications', i, { noExpiry: e.target.checked, expiryDate: '' })} />
+                    <label htmlFor={`noexp-${i}`} style={{ fontSize: 13 }}>No Expiry</label>
+                  </div>
+                  <div className="grid-2">
+                    <div className="form-group"><label className="form-label">Credential ID</label><input className="form-input" placeholder="ABC123XYZ" value={cert.credentialId || ''} onChange={e => updateItem('certifications', i, { credentialId: e.target.value })} /></div>
+                    <div className="form-group"><label className="form-label">Certificate URL</label><input className="form-input" placeholder="https://..." value={cert.url || ''} onChange={e => updateItem('certifications', i, { url: e.target.value })} /></div>
+                  </div>
+                  <button className="btn btn-danger btn-sm" onClick={() => removeItem('certifications', i)}>🗑️ Remove</button>
+                </div>
+              ))}
+              {(resume.certifications || []).length === 0 && <p style={{ color: '#9ca3af', textAlign: 'center', padding: 30 }}>No certifications added yet. Click "+ Add Certification" to start.</p>}
+            </div>
+          )}
         </div>
 
         {/* AI Suggestion */}
@@ -362,7 +418,9 @@ export default function ResumeBuilder() {
                ⬅️ Back to Editor
              </button>
           </div>
-          <ResumePreview resume={resume} />
+          <PreviewErrorBoundary>
+            <ResumePreview resume={resume} />
+          </PreviewErrorBoundary>
         </div>
       )}
     </div>
