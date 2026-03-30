@@ -40,7 +40,23 @@ export default function Login() {
       toast.success(`Welcome back, ${res.data.user.name}! 👋`);
       navigate('/dashboard');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed!');
+      const message = err.response?.data?.message;
+      
+      if (message === 'Invalid email or password.') {
+        toast.error('Wrong email or password. Please try again!');
+        setErrors({ 
+          email: 'Check your email', 
+          password: 'Check your password' 
+        });
+        setShake(true);
+        setTimeout(() => setShake(false), 400);
+      } else if (message === 'Email already registered.') {
+        toast.error('This email is already registered!');
+      } else if (!navigator.onLine) {
+        toast.error('No internet connection!');
+      } else {
+        toast.error('Something went wrong. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -67,7 +83,8 @@ export default function Login() {
                 className="form-input"
                 placeholder="you@example.com"
                 value={form.email}
-                onChange={e => { setForm({ ...form, email: e.target.value }); setErrors({...errors, email: ''}); }}
+                style={{ borderColor: errors.email ? 'red' : '' }}
+                onChange={e => { setForm({ ...form, email: e.target.value }); setErrors({}); }}
                 required
               />
               {errors.email && <div className="form-error">{errors.email}</div>}
@@ -79,7 +96,8 @@ export default function Login() {
                 className="form-input"
                 placeholder="Enter your password"
                 value={form.password}
-                onChange={e => { setForm({ ...form, password: e.target.value }); setErrors({...errors, password: ''}); }}
+                style={{ borderColor: errors.password ? 'red' : '' }}
+                onChange={e => { setForm({ ...form, password: e.target.value }); setErrors({}); }}
                 required
               />
               {errors.password && <div className="form-error">{errors.password}</div>}
