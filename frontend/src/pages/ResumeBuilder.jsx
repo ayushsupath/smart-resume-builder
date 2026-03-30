@@ -64,11 +64,11 @@ export default function ResumeBuilder() {
     try {
       if (isNew) {
         const res = await api.post('/resumes', resume);
-        toast.success('Resume saved! ✅');
+        toast.success('Resume saved successfully! ✅');
         navigate(`/resumes/${res.data.resume.id}`);
       } else {
         await api.put(`/resumes/${id}`, resume);
-        toast.success('Resume updated! ✅');
+        toast.success('Resume saved successfully! ✅');
       }
     } catch (err) {
       toast.error('Failed to save resume');
@@ -84,9 +84,9 @@ export default function ResumeBuilder() {
     try {
       const res = await api.post(`/resumes/${id}/improve`);
       setAiSuggestion(res.data.suggestion);
-      toast.success('AI analysis done! 🤖');
+      toast.success('AI analysis complete! 🤖');
     } catch (err) {
-      toast.error('AI service error. Check your API key.');
+      toast.error('AI service busy. Please try again in a moment.');
     } finally {
       setAiLoading(false);
     }
@@ -101,7 +101,7 @@ export default function ResumeBuilder() {
       setAtsResult(res.data.scoreData);
       toast.success('ATS check complete! 🎯');
     } catch (err) {
-      toast.error('AI service error. Check your API key.');
+      toast.error('AI service busy. Please try again in a moment.');
     } finally {
       setAtsLoading(false);
     }
@@ -145,13 +145,13 @@ export default function ResumeBuilder() {
                 {showPreview ? '🙈 Hide Preview' : '👁️ Preview'}
               </button>
               <button onClick={handleAiImprove} className="btn btn-sm" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: 'white' }} disabled={aiLoading}>
-                {aiLoading ? <><span className="spinner"></span> Analyzing...</> : '🤖 AI Improve'}
+                {aiLoading ? <><span className="spinner"></span> Please wait...</> : '🤖 AI Improve'}
               </button>
               <button onClick={handleAtsScore} className="btn btn-sm" style={{ background: '#10b981', color: 'white' }} disabled={atsLoading}>
-                {atsLoading ? <><span className="spinner"></span> Checking...</> : '🎯 ATS Score'}
+                {atsLoading ? <><span className="spinner"></span> Please wait...</> : '🎯 ATS Score'}
               </button>
               <button onClick={handleSave} className="btn btn-primary btn-sm" disabled={saving}>
-                {saving ? <><span className="spinner"></span> Saving...</> : '💾 Save'}
+                {saving ? <><span className="spinner"></span> Please wait...</> : '💾 Save'}
               </button>
             </div>
           </div>

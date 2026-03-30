@@ -7,17 +7,39 @@ import { useAuth } from '../context/AuthContext';
 export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '', phone: '', location: '' });
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [shake, setShake] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const validate = () => {
+    const newErrors = {};
+    if (!form.name || form.name.length < 2) newErrors.name = "Name must be at least 2 characters";
+
+    if (!form.email) newErrors.email = "Please enter your email address";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) newErrors.email = "Please enter a valid email";
+    
+    if (!form.password) newErrors.password = "Please enter your password";
+    else if (form.password.length < 6) newErrors.password = "Password must be at least 6 characters";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (form.password.length < 6) return toast.error('Password must be at least 6 characters');
+
+    if (!validate()) {
+      setShake(true);
+      setTimeout(() => setShake(false), 400);
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await api.post('/auth/register', form);
       login(res.data.token, res.data.user);
-      toast.success('Account created! Welcome 🎉');
+      toast.success('Account created successfully! 🎉');
       navigate('/dashboard');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed!');
@@ -42,7 +64,8 @@ export default function Register() {
             <div className="grid-2">
               <div className="form-group">
                 <label className="form-label">Full Name *</label>
-                <input type="text" className="form-input" placeholder="Rahul Sharma" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
+                <input type="text" className="form-input" placeholder="Rahul Sharma" value={form.name} onChange={e => { setForm({ ...form, name: e.target.value }); setErrors({...errors, name: ''}); }} required />
+                {errors.name && <div className="form-error">{errors.name}</div>}
               </div>
               <div className="form-group">
                 <label className="form-label">Phone</label>
@@ -51,7 +74,8 @@ export default function Register() {
             </div>
             <div className="form-group">
               <label className="form-label">Email Address *</label>
-              <input type="email" className="form-input" placeholder="rahul@example.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
+              <input type="email" className="form-input" placeholder="rahul@example.com" value={form.email} onChange={e => { setForm({ ...form, email: e.target.value }); setErrors({...errors, email: ''}); }} required />
+              {errors.email && <div className="form-error">{errors.email}</div>}
             </div>
             <div className="form-group">
               <label className="form-label">Location</label>
@@ -59,10 +83,11 @@ export default function Register() {
             </div>
             <div className="form-group">
               <label className="form-label">Password *</label>
-              <input type="password" className="form-input" placeholder="Min 6 characters" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required />
+              <input type="password" className="form-input" placeholder="Min 6 characters" value={form.password} onChange={e => { setForm({ ...form, password: e.target.value }); setErrors({...errors, password: ''}); }} required />
+              {errors.password && <div className="form-error">{errors.password}</div>}
             </div>
-            <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }} disabled={loading}>
-              {loading ? <><span className="spinner"></span> Creating account...</> : '🚀 Create Account'}
+            <button type="submit" className={`btn btn-primary ${shake ? 'shake' : ''}`} style={{ width: '100%', justifyContent: 'center', marginTop: 8 }} disabled={loading}>
+              {loading ? <><span className="spinner"></span> Please wait...</> : '🚀 Create Account'}
             </button>
           </form>
           <p style={{ textAlign: 'center', marginTop: 20, fontSize: 14, color: '#6b7280' }}>

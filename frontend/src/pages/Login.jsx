@@ -7,16 +7,37 @@ import { useAuth } from '../context/AuthContext';
 export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [shake, setShake] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const validate = () => {
+    const newErrors = {};
+    if (!form.email) newErrors.email = "Please enter your email address";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) newErrors.email = "Please enter a valid email";
+    
+    if (!form.password) newErrors.password = "Please enter your password";
+    else if (form.password.length < 6) newErrors.password = "Password must be at least 6 characters";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validate()) {
+      setShake(true);
+      setTimeout(() => setShake(false), 400);
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await api.post('/auth/login', form);
       login(res.data.token, res.data.user);
-      toast.success(`Welcome back, ${res.data.user.name}! 🎉`);
+      toast.success(`Welcome back, ${res.data.user.name}! 👋`);
       navigate('/dashboard');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Login failed!');
@@ -46,9 +67,10 @@ export default function Login() {
                 className="form-input"
                 placeholder="you@example.com"
                 value={form.email}
-                onChange={e => setForm({ ...form, email: e.target.value })}
+                onChange={e => { setForm({ ...form, email: e.target.value }); setErrors({...errors, email: ''}); }}
                 required
               />
+              {errors.email && <div className="form-error">{errors.email}</div>}
             </div>
             <div className="form-group">
               <label className="form-label">Password</label>
@@ -57,12 +79,13 @@ export default function Login() {
                 className="form-input"
                 placeholder="Enter your password"
                 value={form.password}
-                onChange={e => setForm({ ...form, password: e.target.value })}
+                onChange={e => { setForm({ ...form, password: e.target.value }); setErrors({...errors, password: ''}); }}
                 required
               />
+              {errors.password && <div className="form-error">{errors.password}</div>}
             </div>
-            <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 8 }} disabled={loading}>
-              {loading ? <><span className="spinner"></span> Logging in...</> : '🚀 Login'}
+            <button type="submit" className={`btn btn-primary ${shake ? 'shake' : ''}`} style={{ width: '100%', justifyContent: 'center', marginTop: 8 }} disabled={loading}>
+              {loading ? <><span className="spinner"></span> Please wait...</> : '🚀 Login'}
             </button>
           </form>
 

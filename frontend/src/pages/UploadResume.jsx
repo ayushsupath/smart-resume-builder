@@ -23,10 +23,10 @@ export default function UploadResume() {
 
   const processFile = (selectedFile) => {
     if (selectedFile.type !== 'application/pdf') {
-      return toast.error('Only PDF files are allowed');
+      return toast.error('Only PDF files are allowed.');
     }
     if (selectedFile.size > 5 * 1024 * 1024) {
-      return toast.error('File size must be less than 5MB');
+      return toast.error('File too large. Max size is 5MB.');
     }
     setFile(selectedFile);
     setAnalysis(null);
@@ -145,7 +145,7 @@ export default function UploadResume() {
             disabled={!file || loadingAnalyze}
             style={{ flex: 1, minWidth: '200px' }}
           >
-            {loadingAnalyze ? <><span className="spinner" style={{marginRight: '8px'}}></span> Analyzing...</> : '🎯 Check ATS Score'}
+            {loadingAnalyze ? <><span className="spinner" style={{marginRight: '8px'}}></span> Please wait...</> : '🎯 Check ATS Score'}
           </button>
           <button 
             className="btn btn-secondary" 
@@ -153,7 +153,7 @@ export default function UploadResume() {
             disabled={!file || loadingImprove}
             style={{ flex: 1, minWidth: '200px' }}
           >
-            {loadingImprove ? <><span className="spinner" style={{marginRight: '8px'}}></span> Improving...</> : '✨ AI Improve Resume'}
+            {loadingImprove ? <><span className="spinner" style={{marginRight: '8px'}}></span> Please wait...</> : '✨ AI Improve Resume'}
           </button>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import api from '../services/api';
+import SkeletonCard from '../components/SkeletonCard';
 
 export default function Resumes() {
   const [resumes, setResumes] = useState([]);
@@ -33,8 +34,10 @@ export default function Resumes() {
   };
 
   if (loading) return (
-    <div className="flex-center" style={{ minHeight: 400 }}>
-      <div className="spinner spinner-dark" style={{ width: 40, height: 40 }}></div>
+    <div className="grid-3">
+      <SkeletonCard variant="card" />
+      <SkeletonCard variant="card" />
+      <SkeletonCard variant="card" />
     </div>
   );
 
@@ -50,10 +53,10 @@ export default function Resumes() {
 
       {resumes.length === 0 ? (
         <div className="card empty-state" style={{ padding: 60 }}>
-          <div className="empty-state-icon">📄</div>
+          <div className="empty-state-icon" style={{fontSize: 64}}>📄</div>
           <h3>No resumes yet!</h3>
-          <p>Create your first professional resume in minutes.</p>
-          <Link to="/resumes/new" className="btn btn-primary">✨ Create Resume</Link>
+          <p>Create your first resume and land your dream job</p>
+          <Link to="/resumes/new" className="btn btn-primary">Create My First Resume →</Link>
         </div>
       ) : (
         <div className="grid-3">

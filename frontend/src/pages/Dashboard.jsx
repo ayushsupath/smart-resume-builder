@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import SkeletonCard from '../components/SkeletonCard';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -32,8 +33,12 @@ export default function Dashboard() {
   ];
 
   if (loading) return (
-    <div className="flex-center" style={{ minHeight: 400 }}>
-      <div className="spinner spinner-dark" style={{ width: 40, height: 40 }}></div>
+    <div className="grid-2">
+      <SkeletonCard variant="card" />
+      <div style={{display: 'flex', flexDirection: 'column', gap: 16}}>
+        <SkeletonCard variant="list" />
+        <SkeletonCard variant="list" />
+      </div>
     </div>
   );
 
@@ -71,10 +76,16 @@ export default function Dashboard() {
             <Link to="/resumes" style={{ fontSize: 13, color: '#6366f1', textDecoration: 'none', fontWeight: 600 }}>View all →</Link>
           </div>
           {resumes.length === 0 ? (
-            <div className="empty-state" style={{ padding: '30px 0' }}>
-              <div className="empty-state-icon">📄</div>
-              <p style={{ color: '#6b7280' }}>No resumes yet</p>
-              <Link to="/resumes/new" className="btn btn-primary btn-sm" style={{ marginTop: 12 }}>Create Resume</Link>
+            <div className="empty-state" style={{ padding: '30px 20px', textAlign: 'left' }}>
+              <div style={{fontSize: 48, marginBottom: 12}}>👋</div>
+              <h3 style={{fontSize: 18, fontWeight: 700, marginBottom: 8}}>Let's get started!</h3>
+              <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 16 }}>Follow these quick steps to build your resume:</p>
+              <ul style={{color: '#4b5563', fontSize: 13, paddingLeft: 20, marginBottom: 20}}>
+                 <li style={{marginBottom: 6}}>1. Click the "Build Resume" button</li>
+                 <li style={{marginBottom: 6}}>2. Fill in your personal details</li>
+                 <li style={{marginBottom: 6}}>3. Let AI improve your content</li>
+              </ul>
+              <Link to="/resumes/new" className="btn btn-primary btn-sm">✨ Build Resume</Link>
             </div>
           ) : resumes.map(r => (
             <div key={r.id} style={{ padding: '12px 0', borderBottom: '1px solid #f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
